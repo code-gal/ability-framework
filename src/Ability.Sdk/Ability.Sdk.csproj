@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsAotCompatible>true</IsAotCompatible>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Ability.Core/Ability.Core.csproj" />
+    <None Update="build/Ability.Sdk.props" Pack="true" PackagePath="buildTransitive/Ability.Sdk.props" />
+    <None Update="build/Ability.Sdk.targets" Pack="true" PackagePath="buildTransitive/Ability.Sdk.targets" />
+    <None Update="build/README.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+</Project>

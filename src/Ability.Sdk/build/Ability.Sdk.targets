@@ -1,0 +1,40 @@
+<Project>
+  <!-- 两种声明只在此转为真实源码路径；保留普通 Compile 项及其原有元数据。 -->
+  <Target Name="_AbilityCollectVirtualLibraries">
+    <ItemGroup>
+      <_AbilityLibraryCompile Include="@(Compile->WithMetadataValue('As', 'Library'))" />
+      <Compile Remove="@(_AbilityLibraryCompile)" />
+      <_AbilityVirtualLibrary Include="@(_AbilityLibraryCompile->'%(FullPath)')" />
+      <_AbilityVirtualLibrary Include="@(AbilityVirtualLib->'%(RootDir)%(Directory)%(Filename)')" />
+    </ItemGroup>
+    <RemoveDuplicates Inputs="@(_AbilityVirtualLibrary)">
+      <Output TaskParameter="Filtered" ItemName="_AbilityDistinctLibrary" />
+    </RemoveDuplicates>
+    <ItemGroup>
+      <_AbilityDistinctLibrary>
+        <!-- 调用方选择独立编译；用源码身份避免不同目录同名切片覆盖或合并。 -->
+        <AssemblyName>%(Filename).$([MSBuild]::StableStringHash('%(FullPath)'))</AssemblyName>
+        <OutputDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)ability-libraries/$([MSBuild]::StableStringHash('%(FullPath)'))', '$(MSBuildProjectDirectory)'))</OutputDirectory>
+      </_AbilityDistinctLibrary>
+    </ItemGroup>
+  </Target>
+
+  <!-- Outputs 使 Target 按源码逐项执行；不在一个属性组中覆盖多项源码的身份。 -->
+  <Target Name="_AbilityBuildVirtualLibrary"
+          BeforeTargets="ResolveAssemblyReferences"
+          DependsOnTargets="_AbilityCollectVirtualLibraries"
+          Condition="'@(AbilityVirtualLib)' != '' Or '@(Compile->WithMetadataValue('As', 'Library'))' != ''"
+          Outputs="%(_AbilityDistinctLibrary.OutputDirectory)/%(_AbilityDistinctLibrary.AssemblyName).dll">
+    <PropertyGroup>
+      <_AbilityLibraryAssembly>%(_AbilityDistinctLibrary.OutputDirectory)/%(_AbilityDistinctLibrary.AssemblyName).dll</_AbilityLibraryAssembly>
+    </PropertyGroup>
+    <!-- Library 只作用于该次独立构建，不向入口或原始切片写入编译属性。 -->
+    <Exec Command="dotnet build &quot;%(_AbilityDistinctLibrary.FullPath)&quot; --output &quot;%(_AbilityDistinctLibrary.OutputDirectory)&quot; --configuration &quot;$(Configuration)&quot; --property:OutputType=Library --property:AssemblyName=&quot;%(_AbilityDistinctLibrary.AssemblyName)&quot; --property:TargetFramework=&quot;$(TargetFramework)&quot; --nologo --verbosity:quiet" />
+    <ItemGroup>
+      <Reference Include="$(_AbilityLibraryAssembly)">
+        <HintPath>$(_AbilityLibraryAssembly)</HintPath>
+        <Private>true</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,6 @@
+<Project>
+  <!-- 文件式程序保留合法菱形包含；普通工程继续使用标准重复源码诊断。 -->
+  <PropertyGroup Condition="'$(FileBasedProgram)' == 'true'">
+    <NoWarn>$(NoWarn);CS2002</NoWarn>
+  </PropertyGroup>
+</Project>

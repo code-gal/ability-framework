@@ -1,0 +1,14 @@
+<Project>
+  <!-- 构建默认值仅作用于 framework；具体入口可按自身发布需求覆盖。 -->
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+  <!-- 文件式开发环境的扩展名映射，不影响普通工程。 -->
+  <PropertyGroup Condition="'$(FileBasedProgram)' == 'true'">
+    <FileBasedProgramsItemMapping>$(FileBasedProgramsItemMapping);.lib=AbilityVirtualLib</FileBasedProgramsItemMapping>
+  </PropertyGroup>
+</Project>

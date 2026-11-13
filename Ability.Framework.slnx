@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Ability.Core/Ability.Core.csproj" />
+    <Project Path="src/Ability.Sdk/Ability.Sdk.csproj" />
+    <Project Path="src/Ability.Hosting/Ability.Hosting.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Ability.Framework.Tests/Ability.Framework.Tests.csproj" />
+    <Project Path="test/Ability.CommentChecker/Ability.CommentChecker.csproj" />
+  </Folder>
+  <Folder Name="/test/auxiliary/">
+    <Project Path="test/auxiliary/Ability.MinimalLauncher/Ability.MinimalLauncher.csproj" />
+    <Project Path="test/auxiliary/Ability.MinimalHost/Ability.MinimalHost.csproj" />
+  </Folder>
+  <Folder Name="/spec/">
+    <File Path="spec/spec.md" />
+    <File Path="spec/architecture.md" />
+    <File Path="spec/core.md" />
+    <File Path="spec/sdk.md" />
+    <File Path="spec/hosting.md" />
+    <File Path="spec/memory.md" />
+  </Folder>
+  <Folder Name="/spec/verification/">
+    <File Path="spec/verification/phase-1.md" />
+    <File Path="spec/verification/phase-2.md" />
+    <File Path="spec/verification/phase-2.1.md" />
+    <File Path="spec/verification/phase-2.2.md" />
+  </Folder>
+</Solution>
